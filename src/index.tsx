@@ -16,7 +16,7 @@ export const App = () => {
   const startService = async () => {
     ref.current = await esbuild.startService({
       worker: true,
-      wasmURL: './esbuild.wasm'
+      wasmURL: '/esbuild.wasm'
     })
   }
 
