@@ -14,15 +14,16 @@ export const unpkgPathPlugin = () => {
           return { path: args.path, namespace: 'a' }
         }
 
-        // else if (args.path === 'tiny-test-pkg') {
-        //   return {
-        //     path: 'https://unpkg.com/tiny-test-pkg@1.0.0/index.js',
-        //     namespace: 'a'
-        //   }
+        if (args.path.includes('./') || args.path.includes('../')) {
+          return {
+            namespace: 'a',
+            path: new URL(args.path, args.importer + '/').href
+          }
+        }
 
         return {
           namespace: 'a',
-          path: `https://unkpkg.com/{args.path}`
+          path: `https://unpkg.com/${args.path}`
         }
       })
       //we provide the package to be loaded then return control to esbuild
@@ -33,7 +34,7 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-            const message = require('tiny-test-pkg');
+            const message = require('medium-test-pkg');
             console.log(message);
             `
           }
